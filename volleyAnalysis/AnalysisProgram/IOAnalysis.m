@@ -38,7 +38,7 @@ for i = 1:fileNum
     stimDuration(i) = loadData(i).param.stimDuration;
     stimIntensity(i) = loadData(i).param.stimIntensity;
     dataNum(i) = loadData(i).param.dataNum;
-    if strcmp(analysisType,'depth' == 1)
+    if strcmp(analysisType,'depth') == 1
         depth(i) = loadData(i).param.depth;
         laterality(i) = loadData(i).param.laterality;
     end
@@ -96,7 +96,7 @@ switch analysisType
     data_mean = data_mean(:,idx);
     ppAmp_mean = ppAmp_mean(idx);
     latency_mean = latency_mean(idx);
-    normppAmp_mean = normppAmp_mean(idx);    
+%     normppAmp_mean = normppAmp_mean(idx);
     case 'order'
     [val, idx] = sort(dataNum,'ascend');
     stimDuration = stimDuration(idx);
@@ -136,7 +136,7 @@ switch stimType
             case 'order'
                 plotColor = jet(length(idx));
             case 'depth'
-                plotColor = jet(ceil(max(depth)));
+                plotColor = jet(ceil(max(depth))+1);
                 for i = 1:length(plotIdx)
                     depthList{i} = num2str(depth(i));
                 end
@@ -284,7 +284,7 @@ switch stimType
                     colorbar
                     caxis([min(floor(idx)),max(floor(idx))])
                 case 'depth'
-                    p(i) = plot(1/fs*1000-stimDelay:1/fs*1000:dataLength/fs*1000-stimDelay,data_mean(:,i),'color',plotColor(ceil(depth(i)),:),'linewidth',2);
+                    p(i) = plot(1/fs*1000-stimDelay:1/fs*1000:dataLength/fs*1000-stimDelay,data_mean(:,i),'color',plotColor(ceil(depth(i))+1,:),'linewidth',2);
                     colorbar
                     caxis([min(floor(idx)),max(floor(idx))])
             end                    
@@ -550,7 +550,9 @@ saveData.data.data = data;
 saveData.data.data_mean = data_mean;
 
 saveData.analysisData.ppAmp_mean = ppAmp_mean;
-saveData.analysisData.normppAmp_mean = normppAmp_mean;
+if strcmp(analysisType,'depth') == 0
+    saveData.analysisData.normppAmp_mean = normppAmp_mean;
+end
 saveData.analysisData.latency_mean = latency_mean;
 
 savePanel(saveData);
