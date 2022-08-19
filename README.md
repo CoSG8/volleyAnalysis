@@ -1,5 +1,5 @@
 # volleyAnalysis
-matlab
+matlab scripts  
 
 Please follow the steps below:  
 1.Convert abf file to mat file  
